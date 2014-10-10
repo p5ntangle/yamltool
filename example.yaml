@@ -1,0 +1,60 @@
+controller:
+  access:
+    email: thisisadifferent@email.address
+  network_scheme:
+    transformations:
+    - action: add-br
+      name: br-fl
+    - action: add-patch
+      bridges:
+      - br-ovs-bond0
+      - br-fl
+      tags:
+      - 2509
+  quantum_settings:
+    L2:
+      phys_nets:
+      - bridge: default:br-ovs-bond0
+        vlan_range: 2000:3000
+      segmentation_type: gre,vlan
+      tunnel_id_ranges: 2:65535
+    L3:
+      public_bridge: br-fl
+    predefined_networks:
+      net04:
+        L2:
+          network_type: gre
+          physnet: null
+          router_ext: false
+          segment_id: null
+        L3:
+          enable_dhcp: true
+          floating: null
+          gateway: 192.168.111.1
+          nameservers:
+          - 8.8.4.4
+          - 8.8.8.8
+          subnet: 192.168.111.0/24
+        shared: false
+        tenant: admin
+      net04_ext:
+        L2:
+          network_type: local
+          physnet: null
+          router_ext: true
+          segment_id: null
+        L3:
+          enable_dhcp: false
+          floating: 196.29.141.10:196.29.141.249
+          gateway: 196.29.140.1
+          subnet: 196.29.140/23
+
+
+compute:
+  quantum_settings:
+    L2:
+      phys_nets:
+      - bridge: default:br-ovs-bond0
+        vlan_range: 2000:3000
+      segmentation_type: gre,vlan
+      tunnel_id_ranges: 2:65535
